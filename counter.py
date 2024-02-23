@@ -1,14 +1,22 @@
 from tkinter import *
 from tkinter import font
+from tkinter import ttk
 
 root = Tk()
 root.title("Counter")
 root.geometry("640x400")
 
+style = ttk.Style()
+style.theme_use("vista")
+style.configure("TLabel", font=("Verdana", 150), foreground="red")
+style.configure("TButton", font=("Verdana", 20, 'bold'), foreground="blue")
+style.configure("new.TButton", font=("Verdana", 20, 'bold'), foreground="green")
+
+
 count = 0
 
-lbl_font = font.Font(family="Verdana", weight="normal", size=150)
-lbl_counter = Label(root, text=str(count), font=lbl_font)
+lbl_counter = ttk.Label(root, text=str(count), anchor='center')
+lbl_counter.configure(style='TLabel')
 lbl_counter.pack(side='top', fill='x')
 
 
@@ -19,10 +27,9 @@ def increase_lbl():
     lbl_counter.config(text=str(count))
 
 
-btn_font = font.Font(family='Verdana', weight='normal', size=20)
-btn_inc = Button(root)
-btn_inc.config(text="+", font=btn_font)
-btn_inc.config(height=5)
+btn_inc = ttk.Button(root)
+btn_inc.configure(text="+")
+btn_inc.configure(style="TButton")
 btn_inc.pack(side='left', expand=True, fill='both')
 btn_inc.config(command=increase_lbl)
 
@@ -33,9 +40,9 @@ def reset_lbl():
     lbl_counter.config(text=str(count))
 
 
-btn_reset = Button(root)
-btn_reset.config(text='0', font=btn_font)
-btn_reset.config(height=5)
+btn_reset = ttk.Button(root)
+btn_reset.config(text='0')
+btn_reset.configure(style='new.TButton')
 btn_reset.pack(side='right', expand=True, fill='both')
 btn_reset.config(command=reset_lbl)
 
@@ -47,7 +54,7 @@ def decrease_lbl():
         lbl_counter.config(text=str(count))
 
 
-def key_handler(event):
+def keypress_handler(event):
     if event.keycode == 27:     # esc
         reset_lbl()
     elif event.keycode == 8:    # backspace
@@ -56,6 +63,7 @@ def key_handler(event):
         increase_lbl()
 
 
-root.bind('<Key>', key_handler)
+root.bind('<Key>', keypress_handler)
+
 
 root.mainloop()
